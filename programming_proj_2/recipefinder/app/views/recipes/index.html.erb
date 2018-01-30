@@ -1,0 +1,40 @@
+<h1> John's dope website </h1>
+<p> Powered By Food2Fork.com </p>
+
+<table border="1">
+  <tr>
+    <th>Recipe picture:</th>
+    <th>Title:</th>
+    <th>Social Rank of Recipe:</th>
+  <tr>
+  <% @recipes.each do |recipe| %>
+    <!-- do the same zig zagging that they show in the video -->
+    <tr class=<%= cycle('even', 'odd') %>>
+      <!-- this links the image to the recipe -->
+      <td><%= 
+            link_to(image_tag(recipe["image_url"], alt: 'Image', title: 'Recipe Image', height: '100', width: '100'), #closes image tag
+                    recipe["source_url"]) %>
+      </td>
+      <!-- this links the text to the recipe -->
+      <td><%= 
+            link_to(sanitize(recipe["title"]), recipe["source_url"]) %>
+      </td>
+
+      <!-- this just pulls the social rank --> 
+      <td><%= recipe["social_rank"] %></td>
+    </tr>
+  <% end %>
+</table>
+
+<!-- note:
+    you have to specify your URL search term in the following format:
+    http://localhost:3000/recipes/index?search=swiss
+
+    which is just arbitrary and dumb. 
+    the default page does link to chocolate though which is a necessary condition that the site specifies.
+
+    The sanitize feature is interestaing and yeah i had to read over the html to see what was going on. the functionality is specified here.
+
+    Sanitize recipe titles displayed. Rails automatically escapes HTML in your strings (to avoid XSS attacks http://en.wikipedia.org/wiki/Cross-site_scripting). Because of this, some of your titles will look wrong. For example, try searching for mocha and look at your titles. To get around this issue, Rails has a sanitize (or raw) helper (http://api.rubyonrails.org/classes/ActionView/Helpers/SanitizeHelper.html#method-i-sanitize) that will help you display HTML characters properly
+-->
+
